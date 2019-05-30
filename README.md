@@ -29,11 +29,9 @@ ICESat-2 employs a photon counting (PC) system to obtain better measurement sens
 * ATL20: Gridded freeboard
 * Unofficial sea ice thickness products through NASA GSFC (along-track and gridded)
 
-Arguably ATL07 is the most important IS2 product for sea ice users. ATL07 provides along-track surface height and type (e.g. snow-covered ice, open water) for the ice-covered seas of the northern and southern hemispheres. Sea surface and sea ice height are estimated for segments along each of the six beams. Surface height estimates are referenced to the mean sea surface (MSS). Segment length varies with surface type as it is determined by the distance over which ~150 signal photons are accumulated (expect segments length around 50 m, as each shot gives us back a few photons and the shots have an along-track reoslution of 70 cm). 
+  
 
-Two files are provided per day, one each for the north and south, which contain the sixteen intra-day orbits broken out by hemisphere.   
-
-## Input data: ATL03 
+## ATL03 (photon heights)
 
 
 The primary input data from ATL03 are photons heights, background rates, and corrections applied to the height estimates. The standard height estimates include a number of corrections applied to the height estimates (see below). ATL03 applies multiple geophysical corrections to provide corrected heights for all the downlinked photons. By design, each of these corrections can easily be removed by the end user from the ATL03 data products if desired. By default, they are applied to generate a best estimate of the photon height. 
@@ -45,13 +43,20 @@ Photon cloud parameters:
 • The height of the column used in the background calculation
 (bckgrd_int_height_reduced)
 
-## Input data: ATL09
+### ATL09 (clouds)
 
 
 
-# ATL03/09 to ATL07 heights
+## ATL07 (sea surface/sea ice heights)
 
-Provide a brief overview of this two-step filtering
+Arguably ATL07 is the most important IS2 product for sea ice users. ATL07 provides along-track surface height and type (e.g. snow-covered ice, open water) for the ice-covered seas of the northern and southern hemispheres. Sea surface and sea ice height are estimated for segments along each of the six beams. Surface height estimates are referenced to the mean sea surface (MSS). Segment length varies with surface type as it is determined by the distance over which ~150 signal photons are accumulated (expect segments length around 50 m, as each shot gives us back a few photons and the shots have an along-track reoslution of 70 cm). 
+
+Two files are provided per day, one each for the north and south, which contain the sixteen intra-day orbits broken out by hemisphere. 
+
+
+Summarize the following flow-charts??
+
+
 ![Coarse_surface_finding](Coarse_surface_finding.png?raw=true "Coarse_surface_finding, figure taken from the ATL07/10 ATBD document")
 
 Provide a brief overview of this two-step filtering
@@ -67,11 +72,17 @@ Provide a brief overview of this classification scheme
 
 
 ## Things to consider when using ATL07
-# First photon bias
-### Is this a variable in the ATL07 file??
+* First photon bias (Is this a variable in the ATL07 file???)
+* Subsurface-scattering corrections (not included)
 
-A first-photon bias estimate is provided from system engineering with each height estimate. The expected biases are defined in the Cal-19 (an ICESat-2 document). As
-mentioned earlier, at low photon rates an insignificant fraction of input events occur
+
+A first-photon bias estimate is provided from system engineering with each height estimate. The expected biases are defined in the Cal-19 (an ICESat-2 document). 
+
+The subsurface-scattering, or volume scattering, bias comes from photons that experience multiple scattering within the snow or ice before returning to the satellite. 
+
+
+
+<!-- As mentioned earlier, at low photon rates an insignificant fraction of input events occur
 during the dead time from a previous event, so the output event rate from the receiver is
 linear with the input photon rate (the counting efficiency). As the input rate increases, a
 larger fraction occurs during the dead time, and the behavior becomes less linear. There
@@ -80,12 +91,11 @@ effect on the observed photon distribution. Figure 9 illustrates the FPB for dif
 return pulse width and events/shot. It can be seen that at the nominal return rates of 6/1.5 
 photon/pulse (strong/weak beams) for snow covered sea ice, the corrections are ~1-3 cm.
 It should also be noted that these corrections will use the average dead time for the active
-channels for each ground track.
+channels for each ground track. -->
 
-## Subsurface-scattering corrections (not included)
 
-The subsurface-scattering, or volume scattering, bias comes from photons that experience
-multiple scattering within the snow or ice before returning to the satellite. Ice absorbs
+
+<!-- Ice absorbs
 green light only weakly, with attenuation lengths of tens of meters or more, but ice grains
 in snow and bubbles in ice both scatter green light strongly [Warren et al., 2006]. While
 most photons exit the surface of a snow pack within a fraction of a nanosecond, some are
@@ -99,11 +109,12 @@ density of the snow and its bulk absorbance, both of which are determined by the
 and grain and/or bubble size close to the surface. Since neither of these properties are
 known at the time of ATLAS processing, each must be determined independently using
 external information about the snow, such as meteorological model output or infrared
-reflectance data.
-
-These corrections will not be provided
+reflectance data. -->
 
 
+## ATL10 (sea ice freeboards)
+
+## Gridded freebaords (ATL20) and sea ice thickness (NASA GSFC research product)
 
 # Repo setup
 
