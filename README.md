@@ -71,7 +71,7 @@ Provide a brief overview of this classification scheme
 ![swath_segment](swath_segment.png?raw=true "ICESat-2 swath_segment, figure taken from the ATL07/10 ATBD document")
 
 
-## Things to consider when using ATL07
+### Things to consider when using ATL07
 * First photon bias (Is this a variable in the ATL07 file???)
 * Subsurface-scattering corrections (not included)
 
@@ -115,6 +115,8 @@ reflectance data. -->
 ## ATL10 (sea ice freeboards)
 
 ## Gridded freebaords (ATL20) and sea ice thickness (NASA GSFC research product)
+
+
 
 # Repo setup
 
