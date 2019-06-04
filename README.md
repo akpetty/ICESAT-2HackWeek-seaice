@@ -1,17 +1,16 @@
 # ICESAT-2HackWeek-seaice
 ICESat-2 hack week repository for those in the sea ice team
 
+## To do
 
-* Look at https://nsidc.org/data/atl07 AND ADD INFO ON THE VARIABLES ETC!!
 * Get the ATL10 files for Nov 15th (coincident with ATL03/07)
-
-* Add some stuff on the filename convention (e.g. Fernando's notebook)
+* Add some stuff in this README on ATL filename convention - reference Fernando's notebook.
 * provide some more info on the variables of interest.
 * Explore the ssh_flag and quality flags. Highlight issues of cloud filtering etc. 
 * Analyze the various beams! Show the consistency between strong and weak etc.
-* Do a freeboard derivation! Show how we go from ATL07 to ATL10. 
+* Show a freeboard derivation. Show how we go from ATL07 to ATL10. 
 * Maybe work backwards from the included data to derive elevation using ATL03 and the various ancillary products (geoid, tides, atmospheric corrections etc).
-* Do some large scale processing reading in a load of ATL07 files.
+* Show an example of reading in and processing a load of ATL07/10 files (maybe using dask).
 
 
 ## Background
@@ -20,16 +19,15 @@ ICESat-2 carries onboard a single instrument – the Advanced Topographic Laser 
 
 ![icesat2_profiling](icesat2_profiling.png?raw=true "ICESat-2 profiling the sea ice surface, figure taken from the ATL07/10 ATBD document")
 
-ICESat-2 employs a photon counting (PC) system to obtain better measurement sensitivity with lower resource (power) demands on the satellite platform compared to the original ICESat mission. A high repetition rate, low pulse energy laser at 532 nm and sensitive detectors are used to provide the round-trip time of individual photons scattered from the surface. The ATLAS instrument transmits laser pulses at 10 kHz and at the ICESat-2 nominal orbit altitude of ~500 km, the laser footprints (~17 m) are separated by ~0.7 m along ground tracks. Six across track beams (three pairs of strong and weak beams) provide profiles of the ice surface, and for ice sheets the multiple beams address the need for unambiguous separation of ice sheet slope from height changes. For sea ice, this provides multiple profiles of sea ice and sea surface heights for improved freeboard and thickness retrievals. The beam configuration and their separation are shown below: the beams within each pair have different transmit energies (‘weak’ and‘strong’, with an energy ratio between them of approximately 1:4) and are separated by 90 m in the across-track direction. The beam pairs are separated by ~3.3 km in the across-track direction, and the strong and weak beams are separated by ~2.5 km in the along-track direction. The ICESat-2 products of most interest to the sea ice community are:
+ICESat-2 employs a photon-counting system to obtain better measurement sensitivity with lower resource (power) demands on the satellite platform compared to the original ICESat mission. A high repetition rate, low pulse energy laser at 532 nm and sensitive detectors are used to provide the round-trip time of individual photons scattered from the surface. The ATLAS instrument transmits laser pulses at 10 kHz and at the ICESat-2 nominal orbit altitude of ~500 km, the laser footprints (~17 m) are separated by ~0.7 m along ground tracks. Six across track beams (three pairs of strong and weak beams) provide profiles of the ice surface, and for ice sheets the multiple beams address the need for unambiguous separation of ice sheet slope from height changes. For sea ice, this provides multiple profiles of sea ice and sea surface heights for improved freeboard and thickness retrievals. The beam configuration and their separation are shown below: the beams within each pair have different transmit energies (‘weak’ and‘strong’, with an energy ratio between them of approximately 1:4) and are separated by 90 m in the across-track direction. The beam pairs are separated by ~3.3 km in the across-track direction, and the strong and weak beams are separated by ~2.5 km in the along-track direction. The ICESat-2 products of most interest to the sea ice community are:
 
-* ATL03: Along-track photon cloud elevations  
-* ATL07: Along-track segment heights (this notebook!!)   
-* ATL09: Cloud productrs (used here mainly for cloud filtering)
-* ATL10: Along-track freeboards (see other Notebook!)
+* ATL03: Along-track photon cloud elevations (ATL03.ipynb tutorial) 
+* ATL07: Along-track segment heights (ATL07.ipynb tutorial) 
+* ATL09: Cloud productrs (no direct tutorial provided, used mainly in ATL07 production for cloud filtering)
+* ATL10: Along-track freeboards (ATL10.ipynb tutorial) 
 * ATL20: Gridded freeboard
 * Unofficial sea ice thickness products through NASA GSFC (along-track and gridded)
 
-  
 
 ## ATL03 (photon heights)
 
@@ -49,12 +47,10 @@ Photon cloud parameters:
 
 ## ATL07 (sea surface/sea ice heights)
 
-Arguably ATL07 is the most important IS2 product for sea ice users. ATL07 provides along-track surface height and type (e.g. snow-covered ice, open water) for the ice-covered seas of the northern and southern hemispheres. Sea surface and sea ice height are estimated for segments along each of the six beams. Surface height estimates are referenced to the mean sea surface (MSS). Segment length varies with surface type as it is determined by the distance over which ~150 signal photons are accumulated (expect segments length around 50 m, as each shot gives us back a few photons and the shots have an along-track reoslution of 70 cm). 
-
-Two files are provided per day, one each for the north and south, which contain the sixteen intra-day orbits broken out by hemisphere. 
+Arguably ATL07 is the most important IS2 product for sea ice users. ATL07 provides along-track surface height and type (e.g. snow-covered ice, open water) for the ice-covered seas of the northern and southern hemispheres. Sea surface and sea ice height are estimated for segments along each of the six beams. Surface height estimates are referenced to the mean sea surface (MSS). Segment length varies with surface type as it is determined by the distance over which ~150 signal photons are accumulated (expect segments length around 50 m, as each shot gives us back a few photons and the shots have an along-track reoslution of 70 cm). Two files are provided per day, one each for the north and south, which contain the sixteen intra-day orbits broken out by hemisphere. 
 
 
-Summarize the following flow-charts??
+A coarse surface filtering method is employed to remove obviously erroneuous returns from background/subsurface/clouds etc.
 
 
 ![Coarse_surface_finding](Coarse_surface_finding.png?raw=true "Coarse_surface_finding, figure taken from the ATL07/10 ATBD document")
@@ -63,21 +59,17 @@ Provide a brief overview of this two-step filtering
 
 ![Fine_surface_finding](Fine_surface_finding.png?raw=true "Fine_surface_finding, figure taken from the ATL07/10 ATBD document")
 
+
 Provide a brief overview of this classification scheme
 
 ![Surface classification](Surface_classification.png?raw=true "Surface classification, figure taken from the ATL07/10 ATBD document")
 
 
-![swath_segment](swath_segment.png?raw=true "ICESat-2 swath_segment, figure taken from the ATL07/10 ATBD document")
-
-
 ### Things to consider when using ATL07
-* First photon bias (Is this a variable in the ATL07 file???)
-* Subsurface-scattering corrections (not included)
-
-
+* First photon bias (is this a variable in the ATL07 file???)
 A first-photon bias estimate is provided from system engineering with each height estimate. The expected biases are defined in the Cal-19 (an ICESat-2 document). 
 
+* Subsurface-scattering corrections (not included)
 The subsurface-scattering, or volume scattering, bias comes from photons that experience multiple scattering within the snow or ice before returning to the satellite. 
 
 
