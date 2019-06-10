@@ -1,6 +1,8 @@
 # ICESAT-2HackWeek-seaice
 ### Alek Petty, June 2018   
-ICESat-2 hack week repository for the sea ice tutorials. Mainly contains the jupyter notebooks which contrain the individual tutorials, but also a few extra code scnippets (see utils.py) that may be of use for the hackathon.   
+ICESat-2 hackweek repository for the sea ice tutorials. Primarily hosts the Jupyter notebooks which contain the individual tutorials, but also a few extra code snippets (see utils.py) that may be of use for the hackathon.   
+
+![icesat2_profiling](./Images/icesat2_profiling.png?raw=true "ICESat-2 profiling the sea ice surface, figure taken from the ATL07/10 ATBD document")
 
 ## To do
 
@@ -64,7 +66,7 @@ Good luck!
 
 ICESat-2 launched succesfully in September 2018 from Vadenberg Airforce Base, California. ICESat-2 carries onboard a single instrument – the Advanced Topographic Laser Altimeter System (ATLAS). Like the altimeter on the first ICESat mission, ATLAS measures the travel times of laser pulses to calculate the distance between the spacecraft and Earth’s surface to derive surface elevation with a specific focus on the polar regions. 
 
-![icesat2_profiling](icesat2_profiling.png?raw=true "ICESat-2 profiling the sea ice surface, figure taken from the ATL07/10 ATBD document")
+![icesat2_profiling](./Images/icesat2_profiling.png?raw=true "ICESat-2 profiling the sea ice surface, figure taken from the ATL07/10 ATBD document")
 
 ICESat-2 employs a photon-counting system to obtain better measurement sensitivity with lower resource (power) demands on the satellite platform compared to the original ICESat mission. A high repetition rate, low pulse energy laser at 532 nm and sensitive detectors are used to provide the round-trip time of individual photons scattered from the surface. The ATLAS instrument transmits laser pulses at 10 kHz and at the ICESat-2 nominal orbit altitude of ~500 km, the laser footprints (~17 m) are separated by ~0.7 m along ground tracks. Six across track beams (three pairs of strong and weak beams) provide profiles of the ice surface, and for ice sheets the multiple beams address the need for unambiguous separation of ice sheet slope from height changes. For sea ice, this provides multiple profiles of sea ice and sea surface heights for improved freeboard and thickness retrievals. The beam configuration and their separation are shown below: the beams within each pair have different transmit energies (‘weak’ and‘strong’, with an energy ratio between them of approximately 1:4) and are separated by 90 m in the across-track direction. The beam pairs are separated by ~3.3 km in the across-track direction, and the strong and weak beams are separated by ~2.5 km in the along-track direction. The ICESat-2 products of most interest to the sea ice community are:
 
