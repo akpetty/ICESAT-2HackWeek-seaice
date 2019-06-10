@@ -1,5 +1,6 @@
 # ICESAT-2HackWeek-seaice
-ICESat-2 hack week repository for those in the sea ice team
+### Alek Petty, June 2018   
+ICESat-2 hack week repository for the sea ice tutorials. Mainly contains the jupyter notebooks which contrain the individual tutorials, but also a few extra code scnippets (see utils.py) that may be of use for the hackathon.   
 
 ## To do
 
@@ -12,25 +13,70 @@ ICESat-2 hack week repository for those in the sea ice team
 * Maybe work backwards from the included data to derive elevation using ATL03 and the various ancillary products (geoid, tides, atmospheric corrections etc).
 * Show an example of reading in and processing a load of ATL07/10 files (maybe using dask).
 
+## Setup
+
+This repo primarily hosts the Jupyter Notebooks needed for the hackweek tutorials. The notebooks should work without any extra steps if you're working in the ICESat-2 Pangeo environment that has been created for this hackweek. Just clone this repository into your Pangeo user account (git clone https://github.com/akpetty/ICESAT-2HackWeek-seaice). To run the notebooks locally, a conda environment file (is2seaiceenv_environment.yml) has been provided in this repo for you to generate a Python environment that includes all the revelant libraries you might need:
+```
+conda env create -f is2seaiceenv_environment.yml
+```
+The hackweek has tutorials on conda (and miniconda) so see those resources for more information. 
+
+The example data files are being stored on a Pangeo Amazon S3 stoargae account. The notebooks provide a call you can run to quickly download these files to your Data directory. A gitignore file is included to ignore these hdf5 (.h5) files if you decide to fork this repo and push any local changes. 
+
+If you want to do this outside of the notebooks you can run the following commands from the terminal to get the data you need:
+```
+cp Data
+aws s3 cp s3://pangeo-data-upload-oregon/icesat2/ATL07-01_20181115003141_07240101_001_01.h5 .
+aws s3 cp s3://pangeo-data-upload-oregon/icesat2/ATL03_20181115022655_07250104_001_01.h5 .
+```
+and examples of how to upload  data  to S3:
+
+```
+aws s3 cp ATL03_20181115022655_07250104_001_01.h5 s3://pangeo-data-upload-oregon/icesat2/
+aws s3 cp ATL07-01_20181115003141_07240101_001_01.h5 s3://pangeo-data-upload-oregon/icesat2/
+```
+
+Good luck!
+
+## Notebooks
+
+1. ATL03.ipynb
+* General understanding of the data included in a typical ATL03 file.
+* Reading in, plotting and basic analysis of ATL03 data.
+* What we can learn from ATL03 to derive the ATL07 surface height segments!
+
+2. ATL07.ipynb
+* General understanding of the data included in a typical ATL07 file.
+* Reading in, plotting and basic analysis of ATL07 data.
+* How is ATL07 data used to generate ATL10 sea ice freeboards and what to look out for when using either product.
+
+3. ATL10.ipynb
+* General understanding of the data included in a typical ATL10 file.
+* Reading in, plotting and basic analysis of ATL10 data.
+* How to use ATL10 freebaords to produce sea ice thickness estimates.
+
+4. Sea ice roughness.ipynb (TBD)
+* Provide some scripts to batch analyze ATL07 or ATL10 data to do some roughness calculations.
+* Provide some initial thoughts and ideas of how to genearte a new, communnity led, roughness product.
+
 
 ## Background
 
-ICESat-2 carries onboard a single instrument – the Advanced Topographic Laser Altimeter System, or ATLAS. Like the altimeter on the first ICESat mission, ATLAS measures the travel times of laser pulses to calculate the distance between the spacecraft and Earth’s surface. 
+ICESat-2 launched succesfully in September 2018 from Vadenberg Airforce Base, California. ICESat-2 carries onboard a single instrument – the Advanced Topographic Laser Altimeter System (ATLAS). Like the altimeter on the first ICESat mission, ATLAS measures the travel times of laser pulses to calculate the distance between the spacecraft and Earth’s surface to derive surface elevation with a specific focus on the polar regions. 
 
 ![icesat2_profiling](icesat2_profiling.png?raw=true "ICESat-2 profiling the sea ice surface, figure taken from the ATL07/10 ATBD document")
 
 ICESat-2 employs a photon-counting system to obtain better measurement sensitivity with lower resource (power) demands on the satellite platform compared to the original ICESat mission. A high repetition rate, low pulse energy laser at 532 nm and sensitive detectors are used to provide the round-trip time of individual photons scattered from the surface. The ATLAS instrument transmits laser pulses at 10 kHz and at the ICESat-2 nominal orbit altitude of ~500 km, the laser footprints (~17 m) are separated by ~0.7 m along ground tracks. Six across track beams (three pairs of strong and weak beams) provide profiles of the ice surface, and for ice sheets the multiple beams address the need for unambiguous separation of ice sheet slope from height changes. For sea ice, this provides multiple profiles of sea ice and sea surface heights for improved freeboard and thickness retrievals. The beam configuration and their separation are shown below: the beams within each pair have different transmit energies (‘weak’ and‘strong’, with an energy ratio between them of approximately 1:4) and are separated by 90 m in the across-track direction. The beam pairs are separated by ~3.3 km in the across-track direction, and the strong and weak beams are separated by ~2.5 km in the along-track direction. The ICESat-2 products of most interest to the sea ice community are:
 
-* ATL03: Along-track photon cloud elevations (ATL03.ipynb tutorial) 
-* ATL07: Along-track segment heights (ATL07.ipynb tutorial) 
+* ATL03: Along-track photon cloud elevations (1. ATL03.ipynb tutorial) 
+* ATL07: Along-track segment heights (2. ATL07.ipynb tutorial) 
 * ATL09: Cloud productrs (no direct tutorial provided, used mainly in ATL07 production for cloud filtering)
-* ATL10: Along-track freeboards (ATL10.ipynb tutorial) 
+* ATL10: Along-track freeboards (3. ATL10.ipynb tutorial) 
 * ATL20: Gridded freeboard
 * Unofficial sea ice thickness products through NASA GSFC (along-track and gridded)
 
 
-## ATL03 (photon heights)
-
+### ATL03 (photon heights)
 
 The primary input data from ATL03 are photons heights, background rates, and corrections applied to the height estimates. The standard height estimates include a number of corrections applied to the height estimates (see below). ATL03 applies multiple geophysical corrections to provide corrected heights for all the downlinked photons. By design, each of these corrections can easily be removed by the end user from the ATL03 data products if desired. By default, they are applied to generate a best estimate of the photon height. 
 
@@ -41,36 +87,32 @@ Photon cloud parameters:
 • The height of the column used in the background calculation
 (bckgrd_int_height_reduced)
 
-### ATL09 (clouds)
+#### ATL09 (clouds)
 
+Add some information here, referencing the ATBD.
 
-
-## ATL07 (sea surface/sea ice heights)
+### ATL07 (sea surface/sea ice heights)
 
 Arguably ATL07 is the most important IS2 product for sea ice users. ATL07 provides along-track surface height and type (e.g. snow-covered ice, open water) for the ice-covered seas of the northern and southern hemispheres. Sea surface and sea ice height are estimated for segments along each of the six beams. Surface height estimates are referenced to the mean sea surface (MSS). Segment length varies with surface type as it is determined by the distance over which ~150 signal photons are accumulated (expect segments length around 50 m, as each shot gives us back a few photons and the shots have an along-track reoslution of 70 cm). Two files are provided per day, one each for the north and south, which contain the sixteen intra-day orbits broken out by hemisphere. 
-
 
 A coarse surface filtering method is employed to remove obviously erroneuous returns from background/subsurface/clouds etc.
 
 
-![Coarse_surface_finding](Coarse_surface_finding.png?raw=true "Coarse_surface_finding, figure taken from the ATL07/10 ATBD document")
+#![Coarse_surface_finding](./Images/Coarse_surface_finding.png?raw=true #"Coarse_surface_finding, figure taken from the ATL07/10 ATBD document")
 
 Provide a brief overview of this two-step filtering
 
-![Fine_surface_finding](Fine_surface_finding.png?raw=true "Fine_surface_finding, figure taken from the ATL07/10 ATBD document")
+#![Fine_surface_finding](./Images/Fine_surface_finding.png?raw=true #"Fine_surface_finding, figure taken from the ATL07/10 ATBD document")
 
 
-Provide a brief overview of this classification scheme
+Provide a brief overview of this classification scheme including the various surfaces that are included (three sea ice types, open water etc.)
 
-![Surface classification](Surface_classification.png?raw=true "Surface classification, figure taken from the ATL07/10 ATBD document")
+#![Surface classification](./Images/Surface_classification.png?raw=true #"Surface classification, figure taken from the ATL07/10 ATBD document")
 
 
-### Things to consider when using ATL07
-* First photon bias (is this a variable in the ATL07 file???)
-A first-photon bias estimate is provided from system engineering with each height estimate. The expected biases are defined in the Cal-19 (an ICESat-2 document). 
+A first-photon bias estimate is included in ATL07, based on system engineering with each height estimate. The expected biases are defined in the Cal-19 (an ICESat-2 document). 
 
-* Subsurface-scattering corrections (not included)
-The subsurface-scattering, or volume scattering, bias comes from photons that experience multiple scattering within the snow or ice before returning to the satellite. 
+Subsurface-scattering, or volume scattering, is a bias that comes from photons that experience multiple scattering within the snow or ice before returning to the satellite.  This is not included in ATL07 but is something worth considering when usign the data
 
 
 
@@ -104,22 +146,10 @@ external information about the snow, such as meteorological model output or infr
 reflectance data. -->
 
 
-## ATL10 (sea ice freeboards)
+### ATL10 (sea ice freeboards)
 
-## Gridded freebaords (ATL20) and sea ice thickness (NASA GSFC research product)
-
-
-
-# Repo setup
+### Gridded freeboards (ATL20) and sea ice thickness (NASA GSFC research product)
 
 
-Run the following from the terminal to get the data you need in your repo..
-cp Data
-aws s3 cp s3://pangeo-data-upload-oregon/icesat2/ATL07-01_20181115003141_07240101_001_01.h5 .
 
-aws s3 cp s3://pangeo-data-upload-oregon/icesat2/ATL03_20181115022655_07250104_001_01.h5 .
 
-To upload the data 
-
-aws s3 cp ATL03_20181115022655_07250104_001_01.h5 s3://pangeo-data-upload-oregon/icesat2/
-aws s3 cp ATL07-01_20181115003141_07240101_001_01.h5 s3://pangeo-data-upload-oregon/icesat2/

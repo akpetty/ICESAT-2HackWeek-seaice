@@ -1,0 +1,35 @@
+Extra bits cut from notebook
+
+# Let's zoom in on a 10 km section..
+
+# Colour code the plot using the various classifications. 
+
+plt.figure(figsize=(12, 5))
+
+plt.plot((dF07[(dF07['ssh_flag']>0)]['along_track_distance']-dF07['along_track_distance'][0])/1000., dF07[(dF07['ssh_flag']>0)]['elev'], color='k', marker='x', linestyle='None',label='sea surface', alpha=1)
+plt.plot((dF07[(dF07['ssh_flag']==0)]['along_track_distance']-dF07['along_track_distance'][0])/1000., dF07[(dF07['ssh_flag']==0)]['elev'], color='b', marker='.', linestyle='None',label='ice', alpha=0.3)
+plt.legend(frameon=False)
+plt.xlabel('Along track distance (km)')
+plt.ylabel('Elevation (m)')
+plt.show()
+
+
+
+# 
+# Note that in the ATL03 example I don't bother doing this and just keep all the data in the table and just use a condition to display data like the example commented out in the next cell..
+# e.g. 
+sectionID=4
+dFstypeIceSection=dFstypeIce.groupby('height_segment_id')
+dFstypeLeadsSection=dFstypeLeads.groupby('height_segment_id')
+#dFstype['elev'].agg(['mean', 'std', 'median', 'mad'])
+dFstypeIceSectionN=dFstypeIce.get_group(sectionID)
+dFstypeIceSectionN['elev'].agg(['mean', 'std', 'median', 'mad'])
+dFstypeLeadsSectionN=dFstypeLeadsSection.get_group(sectionID)
+
+plt.figure(figsize=(12, 5))
+plt.plot((dFstypeIceSectionN.along_track_distance-dF07.along_track_distance[0])/1000., dFstypeIceSectionN.elev, color='m', marker='.', linestyle='None', label='Sea ice', alpha=0.2)
+plt.plot((dFstypeLeadsSectionN.along_track_distance-dF07.along_track_distance[0])/1000., dFstypeLeadsSectionN.elev, color='k', marker='x', linestyle='None',label='Leads', alpha=1.)
+plt.legend(frameon=False)
+plt.xlabel('Along track distance (km)')
+plt.ylabel('Elevation (m)')
+plt.show()
